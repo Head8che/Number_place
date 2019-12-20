@@ -3,8 +3,8 @@ import numpy as np
 
 cap = cv.VideoCapture(0)
 apertureSize = 3
-ratio = 3
-threshold = 50
+# ratio = 3
+# threshold = 90
 
 #If nothing is captured; Camera isn't present or connected 
 if not cap.isOpened():
@@ -22,8 +22,9 @@ while(True):
 
     # Our operations on the frame come here
     Sudoku = cv.cvtColor(frame,cv.COLOR_BGR2GRAY)
-    edges = cv.Canny(Sudoku,threshold,threshold*ratio,apertureSize)
-    lines = cv.HoughLines(edges,1,np.pi/180,200)
+    edges = cv.Canny(Sudoku,90,150,apertureSize)
+    cv.imshow('Edges', edges)  
+    lines = cv.HoughLines(edges,1,np.pi/180,270)
 
     
     if (lines is not None):
@@ -31,7 +32,7 @@ while(True):
         x = 0
         y = 0
         new_line = []
-        # position = []
+        position = []
         for line in lines:
             rho = line[0][0]
             theta = line[0][1]
@@ -49,17 +50,19 @@ while(True):
             y2 = int(y0 - 1000 * (a))
             
             #Angle checking > 45 == Veritcal Line
-            if(b > 0.5):
-                if(rho - x > 10):
+            if(b > 0.45):
+                if(rho - x > 5):
                     #Horizontal position update 
                     x = rho
+                    # Horizontal Line
                     cv.line(frame,(x1,y1),(x2,y2),(0,0,255),2)
                     new_line.append([rho,theta,0])
             #Horizontal Line 
             else:
-                if (rho - y > 10):
+                if (rho - y > 5):
                     #Vertical position update
                     y = rho
+                    # Verital Line
                     cv.line(frame,(x1,y1),(x2,y2),(0,0,255),2)
                     new_line.append([rho,theta,1])
         

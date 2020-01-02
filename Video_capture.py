@@ -74,6 +74,22 @@ while(True):
                         position.append(intersections)
                         cv.circle(frame, (intersections[0], intersections[1]), 3, (0,0,0), -1)
 
+        #This will allow us to extract the data from each of the 81 grids
+        #The Rectangle confirms that the grid has been obtained
+        #since we will need to have each intersections to create a block
+        #There will be a 100 intersction points.
+        if(len(position)==100):
+            Grid = []
+            block=[]
+            Sudoku = cv.adaptiveThreshold(Sudoku, 255, cv.ADAPTIVE_THRESH_GAUSSIAN_C,cv.THRESH_BINARY_INV, 101, 1)
+            for i in range(0,9):
+                for j in range(0,9):
+                    x1 = int(x0 + 1000 * (-b))
+                    x1=int(position[j+i*10][0]+5)
+                    x2=int(position[j+i*10+11][0]-5)
+                    y1=int(position[j+i*10][1]+5)
+                    y2=int(position[j+i*10+11][1]-5)
+                    cv.rectangle(frame,(x1,y1),(x2, y2),(0,255,0),2)
 
     # Display the resulting frame
     cv.imshow('Sudoku Solver', frame)   

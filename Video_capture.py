@@ -23,7 +23,7 @@ while(True):
     cv.imshow('Edges', edges)  
     lines = cv.HoughLinesP(edges,1,np.pi/180,270,100,10)
 
-    
+
     if (lines is not None):
         lines = sorted(lines, key=lambda line:line[0][0])
         x = 0
